@@ -2,8 +2,10 @@ package main
 
 import (
 	"be_latihan/config"
+	"be_latihan/docs"
 	"be_latihan/model"
 	"be_latihan/router"
+	"os"
 	"strings"
 
 	_ "be_latihan/docs"
@@ -27,6 +29,12 @@ import (
 func main() {
 	app := fiber.New()
 	app.Use(logger.New())
+
+	swaggerHost := os.Getenv("SWAGGER_HOST")
+	if swaggerHost == "" {
+		swaggerHost = "127.0.0.1:3000"
+	}
+	docs.SwaggerInfo.Host = swaggerHost
 
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: strings.Join(config.GetAllowedOrigins(), ","),
